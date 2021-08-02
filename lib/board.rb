@@ -30,7 +30,3 @@ class Board
     end
   end
 end
-
-b = Board.new
-puts b.winning?
-b.print_board
