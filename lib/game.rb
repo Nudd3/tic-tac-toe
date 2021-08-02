@@ -26,14 +26,13 @@ class Game
     
     init_players
     @board.print_board
-    #binding.pry
     while true
       prompt_whos_turn(current_player.name)
       user_input = gets.chomp
-      #if not valid?(user_input.to_i)
-       # puts 'Invalid number, please try again'
-        #next
-      #end
+      if not valid?(user_input.to_i)
+        puts 'Invalid number, please try again'
+        next
+      end
       
       if board.taken?(user_input.to_i)
         puts "Spot taken, please try again"
@@ -43,6 +42,11 @@ class Game
       @board.set_coordinate(user_input.to_i, @current_player.symbol)
       @board.print_board
 
+      if @board.full?
+        puts "It's a draw!"
+        break
+      end
+
       if @board.winner?
         puts "#{current_player.name} won!".green
         break
@@ -50,10 +54,10 @@ class Game
       swap_turn
     end
 
-    print 'Wanna play again?(y/n)'
-    if gets.chomp == 'y'
-      play
-    end
+    #print 'Wanna play again?(y/n)'
+    #if gets.chomp == 'y'
+      #play
+    #end
 
   end
 
