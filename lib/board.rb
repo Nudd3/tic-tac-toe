@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+#   1. Create a board
+#   2. Update the board
+#   3. Check whether there's a winner
 # class for the board
 class Board
   attr_reader :squares
@@ -14,13 +17,16 @@ class Board
   end
 
   def winning?
-    
+    WINNING_BOARDS.any? do |board|
+      [squares[board[0]], squares[board[1]], squares[board[2]]].uniq.length == 1
+    end
   end
 
   def set_coordinate(coordinate, symbol)
     @squares[coordinate - 1] = symbol
   end
 
+  # rubocop:disable Metrics/AbcSize
   def print_board
     puts <<-HEREDOC
       #{squares[0]} #{squares[1]} #{squares[2]}
@@ -28,4 +34,5 @@ class Board
       #{squares[6]} #{squares[7]} #{squares[8]}
     HEREDOC
   end
+  # rubocop:enable Metrics/AbcSize
 end
