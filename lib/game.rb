@@ -1,46 +1,54 @@
 # frozen_string_literal: true
 
+# A game needs:
+# two players
+# a board
+
 require_relative 'board'
+require_relative 'player'
+require_relative 'interface_messages'
 # game class
 class Game
+  include InterfaceMessages
+
+  attr_accessor :player_one, :player_two, :current_player
+
   def initialize
     @board = Board.new
-    @players = Array.new
-  end
-
-  def create_player
-
-  end
-
-  def init_players
-    print 'Name of first player: '
-    first_player_name = gets.chomp
-    print 'Symbol of first player: '
-    first_player_symbol = gets.chomp
-    print 'Name of second player: '
-    second_player_name = gets.chomp
-    print 'Symbol of second player: '
-    second_player_symbol = gets.chomp
-    players << Player.new(first_player_name, first_player_symbol)
-    players << Player.new(second_player_name, second_player_symbol)
+    @player_one = nil
+    @player_two = nil
+    @current_player = nil
   end
 
   def play
+    init_players
     @board.print_board
     while true
-      
-      print 'Select where to place your symbol or "q" to exit: '
-      user_input = gets.chomp
-      print "\n"
-      break if user_input == 'q'
-
-      @board.set_coordinate(user_input.to_i, 'X')
-      @board.print_board
-      if @board.winning? 
-        puts "WINNER!"
-        break
-      end
+      print "#{current_player.name}'s turn"
+      input = gets.chomp
+      break if input == 'q'
+      swap_turn
     end
+  end
+
+  private
+
+  def init_players
+    @player_one = create_player(1)
+    @player_two = create_player(2)
+    @current_player = player_one
+  end
+
+  def create_player(number)
+    prompt_init_player_name(number)
+    name = gets.chomp
+    prompt_init_player_marker(name)
+    symbol = gets.chomp
+    Player.new(name, symbol)
+  end
+
+  def swap_turn
+    @current_player = @current_player == @player_one ? @player_two : @player_one
   end
 end
 
