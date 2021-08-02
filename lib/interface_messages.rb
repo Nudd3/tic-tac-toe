@@ -9,4 +9,8 @@ module InterfaceMessages
   def prompt_init_player_marker(name)
     print "Choose marker for #{name} (letters only): "
   end
+
+  def prompt_whos_turn(name)
+    print "It's #{name}'s turn to play: "
+  end
 end

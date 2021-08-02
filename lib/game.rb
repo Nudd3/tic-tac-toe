@@ -24,14 +24,25 @@ class Game
     init_players
     @board.print_board
     while true
-      print "#{current_player.name}'s turn"
-      input = gets.chomp
-      break if input == 'q'
+      prompt_whos_turn(current_player.name)
+      user_input = gets.chomp
+      if not valid?(user_input.to_i)
+        puts 'Invalid number, please try again'
+        next
+      end
+      if taken?(user_input.to_i)
+        puts "Spot taken, please try again"
+        next
+      end
       swap_turn
     end
   end
 
   private
+
+  def valid?(user_input)
+    user_input.between(1, 9) ? true : false
+  end
 
   def init_players
     @player_one = create_player(1)
