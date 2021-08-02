@@ -2,46 +2,30 @@
 
 # class for the board
 class Board
-  @@WINNING_BOARDS = [1, 2, 3], [4, 5, 6], [7, 8, 9],
-                     [1, 4, 7], [2, 5, 8], [3, 6, 9],
-                     [1, 5, 9], [3, 5, 7]
+  attr_reader :squares
+
+  WINNING_BOARDS = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+    [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+  ].freeze
 
   def initialize
-    @board = [
-      ['-', '-', '-'],
-      ['-', '-', '-'],
-      ['-', '-', '-']
-    ]
+    @squares = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end
 
   def winning?
-    @board.each do |sub_array|
-      return true if @@WINNING_BOARDS.include?(sub_array)
-    end
-    false
+    
   end
 
   def set_coordinate(coordinate, symbol)
-    case coordinate
-    when 1 then @board[0][0] = symbol
-    when 2 then @board[0][1] = symbol
-    when 3 then @board[0][2] = symbol
-    when 4 then @board[1][0] = symbol
-    when 5 then @board[1][1] = symbol
-    when 6 then @board[1][2] = symbol
-    when 7 then @board[2][0] = symbol
-    when 8 then @board[2][1] = symbol
-    when 9 then @board[2][2] = symbol
-    else puts 'coordinate needs to be between 1-9'
-    end
+    @squares[coordinate - 1] = symbol
   end
 
   def print_board
-    @board.each do |row|
-      row.each do |val|
-        print "#{val} "
-      end
-      print "\n"
-    end
+    puts <<-HEREDOC
+      #{squares[0]} #{squares[1]} #{squares[2]}
+      #{squares[3]} #{squares[4]} #{squares[5]}
+      #{squares[6]} #{squares[7]} #{squares[8]}
+    HEREDOC
   end
 end
