@@ -14,9 +14,13 @@ class Game
       user_input = gets.chomp
       print "\n"
       break if user_input == 'q'
+      @board.set_coordinate(user_input.to_i, 'X')
+      if @board.winning?
+        puts 'Winner!'
+        break
+      end
     end
   end
-
 end
 
 g = Game.new
