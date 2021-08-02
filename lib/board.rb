@@ -24,6 +24,10 @@ class Board
     @squares.all? { |val| val.is_a?(String) }
   end
 
+  def taken?(coordiate)
+    squares[coordiate + 1].is_a?(Numeric) ? true : false
+  end
+
   def winning?
     WINNING_BOARDS.any? do |board|
       [squares[board[0]], squares[board[1]], squares[board[2]]].uniq.length == 1

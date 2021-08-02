@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pry'
 # A game needs:
 # two players
 # a board
@@ -11,7 +12,7 @@ require_relative 'interface_messages'
 class Game
   include InterfaceMessages
 
-  attr_accessor :player_one, :player_two, :current_player
+  attr_accessor :player_one, :player_two, :current_player, :board
 
   def initialize
     @board = Board.new
@@ -21,6 +22,7 @@ class Game
   end
 
   def play
+    #binding.pry
     init_players
     @board.print_board
     while true
@@ -30,10 +32,13 @@ class Game
         puts 'Invalid number, please try again'
         next
       end
-      if taken?(user_input.to_i)
+      if not board.taken?(user_input.to_i)
         puts "Spot taken, please try again"
         next
       end
+      
+      @board.set_coordinate(user_input.to_i, @current_player.symbol)
+      @board.print_board
       swap_turn
     end
   end
@@ -41,7 +46,7 @@ class Game
   private
 
   def valid?(user_input)
-    user_input.between(1, 9) ? true : false
+    user_input.between?(1, 9) ? true : false
   end
 
   def init_players
