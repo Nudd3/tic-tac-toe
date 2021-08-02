@@ -24,11 +24,14 @@ class Board
     @squares.all? { |val| val.is_a?(String) }
   end
 
-  def taken?(coordiate)
-    squares[coordiate + 1].is_a?(Numeric) ? true : false
+  # if taken, return true
+  # 8 & 9 always taken,
+  # 6 & 7 never taken
+  def taken?(coordinate)
+    squares[coordinate - 1].is_a?(Numeric) ? false : true
   end
 
-  def winning?
+  def winner?
     WINNING_BOARDS.any? do |board|
       [squares[board[0]], squares[board[1]], squares[board[2]]].uniq.length == 1
     end
@@ -37,9 +40,13 @@ class Board
   # rubocop:disable Metrics/AbcSize
   def print_board
     puts <<-HEREDOC
-      #{squares[0]} #{squares[1]} #{squares[2]}
-      #{squares[3]} #{squares[4]} #{squares[5]}
-      #{squares[6]} #{squares[7]} #{squares[8]}
+
+       #{squares[0]} | #{squares[1]} | #{squares[2]}
+      ---+---+---
+       #{squares[3]} | #{squares[4]} | #{squares[5]}
+      ---+---+---
+       #{squares[6]} | #{squares[7]} | #{squares[8]}
+
     HEREDOC
   end
   # rubocop:enable Metrics/AbcSize
