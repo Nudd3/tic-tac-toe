@@ -16,14 +16,18 @@ class Board
     @squares = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end
 
+  def set_coordinate(coordinate, symbol)
+    @squares[coordinate - 1] = symbol
+  end
+
+  def full?
+    @squares.all? { |val| val.is_a?(String) }
+  end
+
   def winning?
     WINNING_BOARDS.any? do |board|
       [squares[board[0]], squares[board[1]], squares[board[2]]].uniq.length == 1
     end
-  end
-
-  def set_coordinate(coordinate, symbol)
-    @squares[coordinate - 1] = symbol
   end
 
   # rubocop:disable Metrics/AbcSize
