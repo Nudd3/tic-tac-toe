@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pry'
+require 'colorize'
 # A game needs:
 # two players
 # a board
@@ -43,7 +44,7 @@ class Game
       @board.print_board
 
       if @board.winner?
-        puts "#{current_player.name} won!"
+        puts "#{current_player.name} won!".green
         break
       end
       swap_turn
