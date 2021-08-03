@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'colorize'
+
 # Module for printing messages to the prompt
 module InterfaceMessages
   def intro_message
@@ -22,8 +24,8 @@ module InterfaceMessages
     print "It's #{name}'s turn to play: "
   end
 
-  def promt_winner(name)
-    print "Congratulations #{name}, you won!"
+  def winner_message(player)
+    print "Congratulations #{player.name}, you won!".yellow
   end
 
   def prompt_draw

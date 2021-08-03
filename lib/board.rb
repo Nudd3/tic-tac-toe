@@ -16,14 +16,17 @@ class Board
     @squares = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end
 
+  # update the coordinate of a square with the given symbol
   def set_coordinate(coordinate, symbol)
     @squares[coordinate - 1] = symbol
   end
 
+  # checks if the board is full
   def full?
     @squares.all? { |val| val.is_a?(String) }
   end
 
+  # checks if a square is already taken
   def taken?(coordinate)
     squares[coordinate - 1].is_a?(Numeric) ? false : true
   end

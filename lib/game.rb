@@ -7,7 +7,7 @@
 #    - Board is full, i.e., draw
 
 require 'pry'
-require 'colorize'
+
 
 require_relative 'board'
 require_relative 'player'
@@ -43,6 +43,7 @@ class Game
   def take_turns
     until board.full?
       turn(current_player)
+      board.print_board
       break if board.winner?
 
       swap_turn
@@ -51,19 +52,12 @@ class Game
 
   # Each turn, a player is to choose where to place his/her symbol
   # Then, a check should be made whether the space is already taken
-  # or if the number inputted is out of bounds. 
+  # or if the number inputted is out of bounds.
   # Two methods: taken? and outOfBounds
   def turn(player)
-    
-  end
-
-
-  def finishing
-    puts board.winner? ? "Winner is #{current_player.name}" : "It's a tie.."
-  end
-
-  def valid?(user_input)
-    user_input.between?(1, 9) ? true : false
+    prompt_whos_turn(player.name)
+    user_input = gets.chomp
+    board.set_coordinate(user_input.to_i, current_player.symbol) unless input_valid?(user_input)
   end
 
   def init_players
@@ -80,11 +74,11 @@ class Game
     Player.new(name, symbol)
   end
 
-  def check_for_spot_taken
-    puts 'Spot taken, please try again' if board.taken?(user_input.to_i)
-  end
-
   def swap_turn
     @current_player = @current_player == @player_one ? @player_two : @player_one
+  end
+
+  def finishing
+    puts board.winner? ? winner_message(current_player) : "It's a tie.."
   end
 end
