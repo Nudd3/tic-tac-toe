@@ -24,9 +24,6 @@ class Board
     @squares.all? { |val| val.is_a?(String) }
   end
 
-  # if taken, return true
-  # 8 & 9 always taken,
-  # 6 & 7 never taken
   def taken?(coordinate)
     squares[coordinate - 1].is_a?(Numeric) ? false : true
   end

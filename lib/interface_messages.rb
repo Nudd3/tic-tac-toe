@@ -3,7 +3,7 @@
 # Module for printing messages to the prompt
 module InterfaceMessages
   def intro_message
-    "Welcome! Let's play some tic tac toe"
+    puts "\nWelcome! Let's play some tic tac toe\n\n"
   end
 
   def prompt_init_player_name(number)

@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+# 1. Display a welcome message to the prompt
+# 2. Take info about players and create them
+# 3. Take turns until one of the following happens:
+#    - Someone wins
+#    - Board is full, i.e., draw
+
 require 'pry'
 require 'colorize'
-# A game needs:
-# two players
-# a board
 
 require_relative 'board'
 require_relative 'player'
@@ -23,45 +26,41 @@ class Game
   end
 
   def play
-    
-    init_players
-    @board.print_board
-    while true
-      prompt_whos_turn(current_player.name)
-      user_input = gets.chomp
-      if not valid?(user_input.to_i)
-        puts 'Invalid number, please try again'
-        next
-      end
-      
-      if board.taken?(user_input.to_i)
-        puts "Spot taken, please try again"
-        next
-      end
-      
-      @board.set_coordinate(user_input.to_i, @current_player.symbol)
-      @board.print_board
-
-      if @board.full?
-        puts "It's a draw!"
-        break
-      end
-
-      if @board.winner?
-        puts "#{current_player.name} won!".green
-        break
-      end
-      swap_turn
-    end
-
-    #print 'Wanna play again?(y/n)'
-    #if gets.chomp == 'y'
-      #play
-    #end
-
+    set_up
+    board.print_board
+    take_turns
+    finishing
   end
 
   private
+
+  # Sets_up the game, showing a message and creating the players
+  def set_up
+    intro_message
+    init_players
+  end
+
+  def take_turns
+    until board.full?
+      turn(current_player)
+      break if board.winner?
+
+      swap_turn
+    end
+  end
+
+  # Each turn, a player is to choose where to place his/her symbol
+  # Then, a check should be made whether the space is already taken
+  # or if the number inputted is out of bounds. 
+  # Two methods: taken? and outOfBounds
+  def turn(player)
+    
+  end
+
+
+  def finishing
+    puts board.winner? ? "Winner is #{current_player.name}" : "It's a tie.."
+  end
 
   def valid?(user_input)
     user_input.between?(1, 9) ? true : false
@@ -76,15 +75,16 @@ class Game
   def create_player(number)
     prompt_init_player_name(number)
     name = gets.chomp
-    prompt_init_player_marker(name)
+    prompt_init_player_symbol(name)
     symbol = gets.chomp
     Player.new(name, symbol)
+  end
+
+  def check_for_spot_taken
+    puts 'Spot taken, please try again' if board.taken?(user_input.to_i)
   end
 
   def swap_turn
     @current_player = @current_player == @player_one ? @player_two : @player_one
   end
 end
-
-g = Game.new
-g.play
