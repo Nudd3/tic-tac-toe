@@ -28,7 +28,7 @@ class Board
 
   # checks if a square is already taken
   def taken?(coordinate)
-    squares[coordinate - 1].is_a?(Numeric) ? false : true
+    squares[coordinate - 1].is_a?(Numeric) ? true : false
   end
 
   def winner?

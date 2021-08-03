@@ -8,7 +8,6 @@
 
 require 'pry'
 
-
 require_relative 'board'
 require_relative 'player'
 require_relative 'interface_messages'
@@ -40,26 +39,6 @@ class Game
     init_players
   end
 
-  def take_turns
-    until board.full?
-      turn(current_player)
-      board.print_board
-      break if board.winner?
-
-      swap_turn
-    end
-  end
-
-  # Each turn, a player is to choose where to place his/her symbol
-  # Then, a check should be made whether the space is already taken
-  # or if the number inputted is out of bounds.
-  # Two methods: taken? and outOfBounds
-  def turn(player)
-    prompt_whos_turn(player.name)
-    user_input = gets.chomp
-    board.set_coordinate(user_input.to_i, current_player.symbol) unless input_valid?(user_input)
-  end
-
   def init_players
     @player_one = create_player(1)
     @player_two = create_player(2)
@@ -72,6 +51,48 @@ class Game
     prompt_init_player_symbol(name)
     symbol = gets.chomp
     Player.new(name, symbol)
+  end
+
+  def take_turns
+    until board.full?
+      turn(current_player)
+      board.print_board
+      break if board.winner?
+
+      swap_turn
+    end
+  end
+
+  def turn(player)
+    prompt_whos_turn(player.name)
+    user_input = gets.chomp
+    if input_valid?(user_input)
+      board.set_coordinate(user_input.to_i, current_player.symbol)
+    else
+      turn(player)
+    end
+  end
+
+  def input_valid?(user_input)
+    unless in_bounds?(user_input)
+      puts 'Input needs to be 1-9'
+      return false
+    end
+
+    unless spot_available?(user_input)
+      puts 'That spot is taken!'
+      return false
+    end
+
+    true
+  end
+
+  def in_bounds?(value)
+    value.to_i.between?(1, 9)
+  end
+
+  def spot_available?(coordinate)
+    board.taken?(coordinate.to_i)
   end
 
   def swap_turn
