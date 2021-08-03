@@ -46,9 +46,9 @@ class Game
   end
 
   def create_player(number)
-    prompt_init_player_name(number)
+    init_player_name_message(number)
     name = gets.chomp
-    prompt_init_player_symbol(name)
+    init_player_symbol_message(name)
     symbol = gets.chomp
     Player.new(name, symbol)
   end
@@ -64,7 +64,7 @@ class Game
   end
 
   def turn(player)
-    prompt_whos_turn(player.name)
+    whos_turn_message(player.name)
     user_input = gets.chomp
     if input_valid?(user_input)
       board.set_coordinate(user_input.to_i, current_player.symbol)
@@ -75,12 +75,12 @@ class Game
 
   def input_valid?(user_input)
     unless in_bounds?(user_input)
-      puts 'Input needs to be 1-9'
+      input_out_of_bounds_message
       return false
     end
 
     unless spot_available?(user_input)
-      puts 'That spot is taken!'
+      spot_taken_message
       return false
     end
 
@@ -100,6 +100,6 @@ class Game
   end
 
   def finishing
-    puts board.winner? ? winner_message(current_player) : "It's a tie.."
+    puts board.winner? ? winner_message(current_player) : draw_message
   end
 end

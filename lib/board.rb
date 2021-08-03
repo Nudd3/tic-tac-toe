@@ -39,7 +39,7 @@ class Board
 
   # rubocop:disable Metrics/AbcSize
   def print_board
-    puts <<-HEREDOC
+    puts <<-BOARD
 
        #{squares[0]} | #{squares[1]} | #{squares[2]}
       ---+---+---
@@ -47,7 +47,7 @@ class Board
       ---+---+---
        #{squares[6]} | #{squares[7]} | #{squares[8]}
 
-    HEREDOC
+    BOARD
   end
   # rubocop:enable Metrics/AbcSize
 end
