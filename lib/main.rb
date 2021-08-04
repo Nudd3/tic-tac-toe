@@ -3,7 +3,6 @@
 require_relative 'game'
 require_relative 'player'
 require_relative 'board'
-require_relative 'interface_messages'
 
 def play
   game = Game.new
@@ -12,9 +11,10 @@ def play
 end
 
 def replay
-  puts 'Play again? (y/n)'
+  print 'Play again? (y/n): '
   user_input = gets.chomp
   play if user_input == 'y'
+  puts 'Thanks for playing!'
 end
 
 play

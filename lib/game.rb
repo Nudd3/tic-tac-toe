@@ -1,20 +1,13 @@
 # frozen_string_literal: true
 
-# 1. Display a welcome message to the prompt
-# 2. Take info about players and create them
-# 3. Take turns until one of the following happens:
-#    - Someone wins
-#    - Board is full, i.e., draw
-
 require 'pry'
+require 'colorize'
 
 require_relative 'board'
 require_relative 'player'
-require_relative 'interface_messages'
+
 # game class
 class Game
-  include InterfaceMessages
-
   attr_accessor :player_one, :player_two, :current_player, :board
 
   def initialize
@@ -33,9 +26,8 @@ class Game
 
   private
 
-  # Sets_up the game, showing a message and creating the players
   def set_up
-    intro_message
+    puts "\nWelcome! Let's play some tic tac toe\n\n"
     init_players
   end
 
@@ -46,9 +38,9 @@ class Game
   end
 
   def create_player(number)
-    init_player_name_message(number)
+    print "Input name of player ##{number}: "
     name = gets.chomp
-    init_player_symbol_message(name)
+    print "Choose symbol for #{name} (letters only): "
     symbol = gets.chomp
     Player.new(name, symbol)
   end
@@ -64,7 +56,7 @@ class Game
   end
 
   def turn(player)
-    whos_turn_message(player.name)
+    print "It's #{player.name}'s turn to play: "
     user_input = gets.chomp
     if input_valid?(user_input)
       board.set_coordinate(user_input.to_i, current_player.symbol)
@@ -75,12 +67,12 @@ class Game
 
   def input_valid?(user_input)
     unless in_bounds?(user_input)
-      input_out_of_bounds_message
+      puts 'Input needs to be between a digit 1 - 9'
       return false
     end
 
     unless spot_available?(user_input)
-      spot_taken_message
+      puts 'That spot is already taken'
       return false
     end
 
@@ -100,6 +92,6 @@ class Game
   end
 
   def finishing
-    puts board.winner? ? winner_message(current_player) : draw_message
+    puts board.winner? ? "Congratulations #{current_player.name}, you won!\n".yellow : "It's a draw..."
   end
 end

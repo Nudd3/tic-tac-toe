@@ -10,7 +10,7 @@ class Player
 
   def initialize(name, symbol)
     @name = name
-    @symbol = @@nr_of_players.zero? ? symbol.red : symbol.green
+    @symbol = @@nr_of_players.even? ? symbol.red : symbol.green
     @@nr_of_players += 1
   end
 end
